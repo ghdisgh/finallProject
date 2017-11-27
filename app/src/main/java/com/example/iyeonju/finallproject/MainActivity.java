@@ -16,17 +16,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Method;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView drawingImageView;
+    private ImageView drawingImageView;
 
-    TextView idView;
-    EditText productBox;
-    EditText quantityBox;
-
+    private TextView idView, height, width;
+    private EditText productBox, quantityBox, address, hedit, wedit;
+    private Button map, addB, findB, deleteB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        drawingImageView = (ImageView) findViewById(R.id.DrawingImageView);
 
         Thread myThread = new Thread(){
 
@@ -111,24 +110,31 @@ public class MainActivity extends AppCompatActivity {
         productBox = (EditText) findViewById(R.id.productName);
         quantityBox = (EditText) findViewById(R.id.productQuantity);
 
+        addB = (Button) findViewById(R.id.addButton);
+        findB = (Button) findViewById(R.id.findButton);
+        deleteB = (Button) findViewById(R.id.deleteButton);
+
+        height = (TextView) findViewById(R.id.Lheight);
+        width = (TextView) findViewById(R.id.LWidth);
+        address = (EditText) findViewById(R.id.editText);
+        hedit = (EditText) findViewById(R.id.editText2);
+        wedit = (EditText) findViewById(R.id.editText3);
+        map = (Button) findViewById(R.id.mapbutton);
 
     }
 
     public void newProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        int quantity =
-                Integer.parseInt(quantityBox.getText().toString());
-        Product product =
-                new Product(productBox.getText().toString(), quantity);
+        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
+        int quantity = Integer.parseInt(quantityBox.getText().toString());
+        Product product = new Product(productBox.getText().toString(), quantity);
         dbHandler.addProduct(product);
         productBox.setText("");
         quantityBox.setText("");
     }
 
     public void lookupProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        Product product =
-                dbHandler.findProduct(productBox.getText().toString());
+        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
+        Product product = dbHandler.findProduct(productBox.getText().toString());
         if (product != null) {
             idView.setText(String.valueOf(product.getID()));
             quantityBox.setText(String.valueOf(product.getQuantity()));
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
         boolean result = dbHandler.deleteProduct(
                 productBox.getText().toString());
         if (result)
