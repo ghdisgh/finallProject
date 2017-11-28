@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f1f1f1"
     tools:context="com.example.iyeonju.finallproject.BlankFragment3"
     android:id="@+id/frameLayout">
 
@@ -12,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="#ffffff"
+        android:background="#f1f1f1"
         android:orientation="vertical"
         android:weightSum="1">
 
