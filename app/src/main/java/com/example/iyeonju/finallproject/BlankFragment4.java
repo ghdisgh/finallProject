@@ -17,6 +17,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class BlankFragment4 extends Fragment implements OnMapReadyCallback {
     private EditText address, hedit, wedit;
     private Button mapV;
 
-    private MapFragment mapFragment;
+    private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private Geocoder geocoder;
 
@@ -72,8 +73,9 @@ public class BlankFragment4 extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map);
         //mapFragment.getMapAsync(this);
+
 
         return view;
     }
@@ -83,7 +85,8 @@ public class BlankFragment4 extends Fragment implements OnMapReadyCallback {
         List<Address> addressList = null;
 
         if (location != null || !location.equals("")) {
-            //Geocoder geocoder = new Geocoder(this);
+
+            geocoder = new Geocoder(getActivity());
             try {
                 addressList = geocoder.getFromLocationName(location, 1);
 
@@ -93,9 +96,12 @@ public class BlankFragment4 extends Fragment implements OnMapReadyCallback {
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
         }
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -108,8 +114,8 @@ public class BlankFragment4 extends Fragment implements OnMapReadyCallback {
 
         // 마커를 생성한다.
         mMap.addMarker(makerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 15));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
     }
 
 }

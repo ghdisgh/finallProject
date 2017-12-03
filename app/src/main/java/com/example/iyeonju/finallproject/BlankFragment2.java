@@ -37,7 +37,7 @@ public class BlankFragment2 extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank_fragment2, container, false);
 
-        final MyDBHandler dbHelper = new MyDBHandler(getActivity().getApplicationContext(), "MoneyBook.db", null, 1);
+        final MyDBHandler dbHelper = new MyDBHandler(getActivity().getApplicationContext(), "FRUIT.db", null, 1);
 
         // 테이블에 있는 모든 데이터 출력
         final TextView result = (TextView) view.findViewById(R.id.result);

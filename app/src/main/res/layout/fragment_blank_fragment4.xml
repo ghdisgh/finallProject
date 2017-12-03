@@ -85,11 +85,12 @@
 
             <fragment
                 android:id="@+id/map"
-                class="com.google.android.gms.maps.MapFragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="397dp" />
+
         </LinearLayout>
     </ScrollView>
 
