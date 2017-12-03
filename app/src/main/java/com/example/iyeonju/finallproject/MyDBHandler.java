@@ -8,89 +8,67 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "productID.db";
-    public static final String TABLE_PRODUCTS = "products";
-
-    public static final String COLUMN_ID = "productid";
-    public static final String COLUMN_PRODUCTNAME = "productname";
-    public static final String COLUMN_QUANTITY = "productquantity";
-
-    public MyDBHandler(Context context, String name,
-                       SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
     }
 
+    // DB를 새로 생성할 때 호출되는 함수
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_PRODUCTS_TABLE = "CREATE TABLE " +
-                TABLE_PRODUCTS + "("
-                + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_PRODUCTNAME
-                + " TEXT," + COLUMN_QUANTITY + " INTEGER" + ")";
-        db.execSQL(CREATE_PRODUCTS_TABLE);
+        // 새로운 테이블 생성
+        /* 이름은 MONEYBOOK이고, 자동으로 값이 증가하는 _id 정수형 기본키 컬럼과
+        item 문자열 컬럼, price 정수형 컬럼, create_at 문자열 컬럼으로 구성된 테이블을 생성. */
+        db.execSQL("CREATE TABLE MONEYBOOK (_id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT, price INTEGER, create_at TEXT);");
     }
 
+    // DB 업그레이드를 위해 버전이 변경될 때 호출되는 함수
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
-        onCreate(db);
+
     }
 
-    public void addProduct(Product product) {
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_PRODUCTNAME, product.getProductName());
-        values.put(COLUMN_QUANTITY, product.getQuantity());
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        db.insert(TABLE_PRODUCTS, null, values);
+    public void insert(String create_at, String item, int price) {
+        // 읽고 쓰기가 가능하게 DB 열기
+        SQLiteDatabase db = getWritableDatabase();
+        // DB에 입력한 값으로 행 추가
+        db.execSQL("INSERT INTO MONEYBOOK VALUES(null, '" + item + "', " + price + ", '" + create_at + "');");
         db.close();
     }
 
-    public Product findProduct(String productname) {
-        String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " +
-                COLUMN_PRODUCTNAME + " = \"" + productname + "\"";
+    public void update(String item, int price) {
+        SQLiteDatabase db = getWritableDatabase();
+        // 입력한 항목과 일치하는 행의 가격 정보 수정
+        db.execSQL("UPDATE MONEYBOOK SET price=" + price + " WHERE item='" + item + "';");
+        db.close();
+    }
 
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void delete(String item) {
+        SQLiteDatabase db = getWritableDatabase();
+        // 입력한 항목과 일치하는 행 삭제
+        db.execSQL("DELETE FROM MONEYBOOK WHERE item='" + item + "';");
+        db.close();
+    }
 
-        Cursor cursor = db.rawQuery(query, null);
+    public String getResult() {
+        // 읽기가 가능하게 DB 열기
+        SQLiteDatabase db = getReadableDatabase();
+        String result = "";
 
-        Product product = new Product();
-
-        if (cursor.moveToFirst()) {
-            cursor.moveToFirst();
-            product.setID(Integer.parseInt(cursor.getString(0)));
-            product.setProductName(cursor.getString(1));
-            product.setQuantity(Integer.parseInt(cursor.getString(2)));
-            cursor.close();
-        } else {
-            product = null;
+        // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
+        Cursor cursor = db.rawQuery("SELECT * FROM MONEYBOOK", null);
+        while (cursor.moveToNext()) {
+            result += cursor.getString(0)
+                    + " : "
+                    + cursor.getString(1)
+                    + " | "
+                    + cursor.getInt(2)
+                    + "원 "
+                    + cursor.getString(3)
+                    + "\n";
         }
-        db.close();
-        return product;
-    }
-
-    public boolean deleteProduct(String productname) {
-        boolean result = false;
-        String query = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " +
-                COLUMN_PRODUCTNAME + " = \"" + productname + "\"";
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        Product product = new Product();
-
-        if (cursor.moveToFirst()) {
-            product.setID(Integer.parseInt(cursor.getString(0)));
-            db.delete(TABLE_PRODUCTS, COLUMN_ID + " = ?",
-                    new String[] { String.valueOf(product.getID()) });
-            cursor.close();
-            result = true;
-        }
-        db.close();
 
         return result;
     }
+
 }
 

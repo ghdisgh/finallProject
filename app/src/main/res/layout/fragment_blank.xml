@@ -20,7 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="스레드" />
+            android:text="스레드"
+            android:textColor="@android:color/holo_purple"
+            android:textSize="36sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/DrawingImageView"

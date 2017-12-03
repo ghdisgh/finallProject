@@ -1,84 +1,59 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#f1f1f1"
-    tools:context="com.example.iyeonju.finallproject.BlankFragment3"
-    android:id="@+id/frameLayout">
+    tools:context="com.example.iyeonju.finallproject.BlankFragment3">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="#f1f1f1"
-        android:orientation="vertical"
-        android:weightSum="1">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="276dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress" />
-
-            <Button
-                android:id="@+id/mapbutton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_light"
-                android:text="Map"
-                android:textColor="#000000" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/Lheight"
-                android:layout_width="56dp"
-                android:layout_height="wrap_content"
-                android:text="경도:"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editText2"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#f1f1f1"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/txtURL"
+                        android:layout_width="276dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10" />
+
+                    <Button
+                        android:id="@+id/urlbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/holo_blue_light"
+                        android:onClick="goURL"
+                        android:text="URL"
+                        android:textColor="#000000" />
+                </LinearLayout>
+
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="5000dp" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/LWidth"
-                android:layout_width="56dp"
-                android:layout_height="wrap_content"
-                android:text="위도:"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="18sp" />
-
-            <EditText
-                android:id="@+id/editText3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none" />
-        </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

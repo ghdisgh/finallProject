@@ -1,30 +1,19 @@
 package com.example.iyeonju.finallproject;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 
+public class MainActivity extends AppCompatActivity  {
 
-public class MainActivity extends AppCompatActivity {
-
-    private ImageView drawingImageView;
-
-    private TextView idView, height, width;
-    private EditText productBox, quantityBox, address, hedit, wedit;
-    private Button map, addB, findB, deleteB;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +23,12 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout =
                 (TabLayout) findViewById(R.id.tab_layout);
 
-        tabLayout.addTab(tabLayout.newTab().setText("스레드"));
-        tabLayout.addTab(tabLayout.newTab().setText("데이터베이스"));
-        tabLayout.addTab(tabLayout.newTab().setText("맵"));
+        tabLayout.addTab(tabLayout.newTab().setText("Thread"));
+        tabLayout.addTab(tabLayout.newTab().setText("DataBase"));
+        tabLayout.addTab(tabLayout.newTab().setText("URL"));
+        tabLayout.addTab(tabLayout.newTab().setText("Map"));
 
-        final ViewPager viewPager =
-                (ViewPager) findViewById(R.id.pager);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
         final PagerAdapter adapter = new Main2Activity
                 (getSupportFragmentManager(), tabLayout.getTabCount());
@@ -62,98 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        drawingImageView = (ImageView) findViewById(R.id.DrawingImageView);
-
-        Thread myThread = new Thread(){
-
-            public void run(){
-
-                int deg=10;
-                RectF rectF = new RectF(200, 200, 500, 500);
-                Paint paint;
-                paint = new Paint();
-                paint.setColor(Color.BLUE);
-                paint.setStyle(Paint.Style.STROKE);
-                paint.setStrokeWidth(10);
-
-
-                final Bitmap bitmap = Bitmap.createBitmap((int) getWindowManager()
-                        .getDefaultDisplay().getWidth(), (int) getWindowManager()
-                        .getDefaultDisplay().getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(bitmap);
-
-
-                for(int i=0;i<=35;i++){
-                    canvas.drawArc (rectF, 0, deg, false, paint);
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            drawingImageView = (ImageView) findViewById(R.id.DrawingImageView);
-                            drawingImageView.setImageBitmap(bitmap);
-
-                        }
-                    });
-                    deg=deg+10;
-                }
-            }
-        };
-        myThread.start();
-
-        idView = (TextView) findViewById(R.id.productID);
-        productBox = (EditText) findViewById(R.id.productName);
-        quantityBox = (EditText) findViewById(R.id.productQuantity);
-
-        addB = (Button) findViewById(R.id.addButton);
-        findB = (Button) findViewById(R.id.findButton);
-        deleteB = (Button) findViewById(R.id.deleteButton);
-
-        height = (TextView) findViewById(R.id.Lheight);
-        width = (TextView) findViewById(R.id.LWidth);
-        address = (EditText) findViewById(R.id.editText);
-        hedit = (EditText) findViewById(R.id.editText2);
-        wedit = (EditText) findViewById(R.id.editText3);
-        map = (Button) findViewById(R.id.mapbutton);
-
     }
 
-    public void newProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
-        int quantity = Integer.parseInt(quantityBox.getText().toString());
-        Product product = new Product(productBox.getText().toString(), quantity);
-        dbHandler.addProduct(product);
-        productBox.setText("");
-        quantityBox.setText("");
-    }
 
-    public void lookupProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
-        Product product = dbHandler.findProduct(productBox.getText().toString());
-        if (product != null) {
-            idView.setText(String.valueOf(product.getID()));
-            quantityBox.setText(String.valueOf(product.getQuantity()));
-        } else {
-            idView.setText("No Match Found");
-        }
-    }
-
-    public void removeProduct (View view) {
-        MyDBHandler dbHandler = new MyDBHandler(null, null, null, 1);
-        boolean result = dbHandler.deleteProduct(
-                productBox.getText().toString());
-        if (result)
-        {
-            idView.setText("Record Deleted");
-            productBox.setText("");
-            quantityBox.setText("");
-        }
-        else
-            idView.setText("No Match Found");
-    }
 }

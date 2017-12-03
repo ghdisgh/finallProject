@@ -25,6 +25,9 @@ public class Main2Activity extends FragmentPagerAdapter {
             case 2:
                 BlankFragment3 tab3 = new BlankFragment3();
                 return tab3;
+            case 3:
+                BlankFragment4 tab4 = new BlankFragment4();
+                return tab4;
             default:
                 return null;
         }
