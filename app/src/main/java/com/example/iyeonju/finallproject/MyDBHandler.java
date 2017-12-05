@@ -16,19 +16,15 @@ public class MyDBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블 생성
-        /* 이름은 FRUIT이고, 자동으로 값이 증가하는 _id 정수형 기본키 컬럼과
-        item 문자열 컬럼, price 정수형 컬럼, create_at 문자열 컬럼으로 구성된 테이블을 생성. */
         db.execSQL("CREATE TABLE FRUIT (_id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT, price INTEGER, create_at TEXT);");
     }
 
-    // DB 업그레이드를 위해 버전이 변경될 때 호출되는 함수
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
 
     public void insert(String create_at, String item, int price) {
-        // 읽고 쓰기가 가능하게 DB 열기
         SQLiteDatabase db = getWritableDatabase();
         // DB에 입력한 값으로 행 추가
         db.execSQL("INSERT INTO FRUIT VALUES(null, '" + item + "', " + price + ", '" + create_at + "');");
@@ -37,14 +33,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
     public void update(String item, int price) {
         SQLiteDatabase db = getWritableDatabase();
-        // 입력한 항목과 일치하는 행의 가격 정보 수정
         db.execSQL("UPDATE FRUIT SET price=" + price + " WHERE item='" + item + "';");
         db.close();
     }
 
     public void delete(String item) {
         SQLiteDatabase db = getWritableDatabase();
-        // 입력한 항목과 일치하는 행 삭제
         db.execSQL("DELETE FROM FRUIT WHERE item='" + item + "';");
         db.close();
     }
